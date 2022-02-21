@@ -1,30 +1,18 @@
+# Changez en fonction de votre configuration
+
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+ resolve_timeout: 1m
 
-rule_files:
-  - 'rules.yml'
+route:
+ receiver: 'gmail-notifications'
 
-alerting:
-  alertmanagers:
-  - static_configs:
-    - targets:
-      - localhost:9093
-
-scrape_configs:
-  - job_name: "prometheus"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["localhost:9090"]
-  - job_name: "substrate_node"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["localhost:9615"]
-  - job_name: "node_exporter"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["localhost:9100"]
-  - job_name: "process-exporter"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["localhost:9256"]
+receivers:
+- name: 'gmail-notifications'
+  email_configs:
+  - to: '' # destination
+    from: '@gmail.com' #source
+    smarthost: 'smtp.gmail.com:587'
+    auth_username: '@gmail.com' #source
+    auth_identity: '@gmail.com' #source
+    auth_password: '' #mot de passe
+    send_resolved: true
