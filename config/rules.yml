@@ -1,1 +1,65 @@
-#add
+groups:
+  - name: alert_rules
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance [{{ $labels.instance }}] down"
+          description: "[{{ $labels.instance }}] of job [{{ $labels.job }}] has been down for more than 1 minute."
+
+      - alert: HostHighCpuLoad
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 92
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high CPU load (instance [{{ $labels.instance }}])
+          description: "CPU load is > 90%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HostHighRamLoad
+        expr: (node_memory_MemTotal_bytes - node_memory_MemFree_bytes - (node_memory_Cached_bytes + node_memory_Buffers_bytes)) / node_memory_MemTotal_bytes *100 > 80
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high RAM usage (instance [{{ $labels.instance }}])
+          description: "RAM usage is > 80%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HostHighNetworkRecvLo
+        expr: irate(node_network_receive_bytes_total{device="lo"}[5m])*8/1000000 > 5
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high Network Receice Lo (instance [{{ $labels.instance }}])
+          description: "Network Receive Lo > 5Mbps (usually < 1Mbps)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HostHighNetworkRecvEns3
+        expr: irate(node_network_receive_bytes_total{device="ens3"}[5m])*8/1000000 > 50
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high Network Receice Ens3 (instance [{{ $labels.instance }}])
+          description: "Network Receive Ens3 > 50Mbps (usually < 20Mbps)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: HostFsCapacity
+        expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/",fstype!="rootfs"} * 100) / node_filesystem_size_bytes{mountpoint="/",fstype!="rootfs"}) > 50
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host FS storage > 50% (instance [{{ $labels.instance }}])
+          description: "File storage available is > 50%\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+      - alert: PeersCountLow
+        expr: polkadot_sub_libp2p_peers_count < 20
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: Low peers count (instance [{{ $labels.instance }}])
+          description: "Number of peers connected under 20\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
