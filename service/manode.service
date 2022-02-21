@@ -1,1 +1,25 @@
-#add
+# Service systemd pour Kusama
+[Unit]
+  Description=Kusama validator
+  StartLimitIntervalSec=500
+  StartLimitBurst=5
+
+[Service]
+  User= # utilisateur pour fonctionnement du service
+  Group= # group pour fonctionnement du service
+  Restart=on-failure
+  RestartSec=5s
+ExecStart=/usr/bin/polkadot \
+  --validator \
+  --chain kusama \
+  --name '' \ # Nom sur la telemetry
+  --unsafe-pruning \
+  --pruning=1000 \
+  --prometheus-port 9615 \
+  --prometheus-external \
+  --telemetry-url 'wss://telemetry-backend.w3f.community/submit/ 1'
+Restart=always
+RestartSec=120
+
+[Install]
+WantedBy=multi-user.target
