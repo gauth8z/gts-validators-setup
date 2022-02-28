@@ -20,8 +20,6 @@ sudo cp ./process-exporter-*.linux-amd64/process-exporter /usr/local/bin/
 sudo cp ./alertmanager-*.linux-amd64/alertmanager /usr/local/bin/
 sudo cp ./alertmanager-*.linux-amd64/amtool /usr/local/bin/
 
-# Plugins😉
-
 # Creation utilisateurs dediés
 sudo useradd --no-create-home --shell /usr/sbin/nologin prometheus
 sudo useradd --no-create-home --shell /usr/sbin/nologin node_exporter
@@ -72,7 +70,8 @@ sudo systemctl start node_exporter.service
 sudo systemctl start process-exporter.service
 sudo systemctl start alertmanager.service
 
-# Verifie ⚠️
+# Verifications
+
 # enable
 sudo systemctl enable prometheus.service
 sudo systemctl enable node_exporter.service
@@ -81,6 +80,9 @@ sudo systemctl enable alertmanager.service
 
 # Test alert-manager
 #curl -H "Content-Type: application/json" -d '[{"Test":{"Alert mail par Gmail":"Good !"}}]' localhost:9093/api/v1/alerts
+
+# Plugins Grafana
+sudo grafana-cli plugins install camptocamp-prometheus-alertmanager-datasource
 
 ## Add Grafana + install
 sudo apt-get install -y apt-transport-https
