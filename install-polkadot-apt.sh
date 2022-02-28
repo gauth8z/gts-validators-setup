@@ -29,9 +29,7 @@ sudo cp service/manode.service /etc/systemd/system/manode.service
 
 # Deamon-reload
 sudo systemctl daemon-reload
-sudo systemctl start manode.service
+#sudo systemctl start manode.service
 #sudo systemctl status manode.service
 
 # Verifications : journalctl -f -u manode -n100
-
-```
