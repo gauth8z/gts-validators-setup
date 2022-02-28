@@ -11,6 +11,7 @@ apt install parity-keyring
 # Install polkadot
 apt install polkadot
 
+
 # TEST
 ## Non archive mode
 #polkadot \
