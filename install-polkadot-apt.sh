@@ -20,7 +20,7 @@ apt install polkadot
 #  --name 'TA NODE' \
 #  --unsafe-pruning \
 #  --pruning=1000 \
-#  --telemetry-url 'wss://telemetry-backend.w3f.community/submit/ 1'
+#  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 1'
 
 # Purge Chain ⚠️
 #polkadot purge-chain --chain kusama
